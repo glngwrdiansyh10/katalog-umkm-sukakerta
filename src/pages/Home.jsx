@@ -7,6 +7,14 @@ const Home = () => {
   return (
     <div className="animate-fade-in">
       <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+        {/* Nanti kalau kamu simpan logo-kkn.png di folder public, logonya otomatis muncul di sini! */}
+        <img 
+          src="/logo-kkn.png" 
+          alt="Logo KKN" 
+          style={{ height: '60px', marginBottom: '1rem', objectFit: 'contain' }}
+          onError={(e) => e.target.style.display = 'none'} // Sembunyikan jika gambar belum ada
+        />
+        
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(21, 128, 61, 0.1)', color: 'var(--primary-dark)', padding: '0.5rem 1rem', borderRadius: '2rem', fontSize: '0.875rem', fontWeight: '600', marginBottom: '1rem' }}>
           <MapPin size={16} /> Desa Sukakerta
         </div>
