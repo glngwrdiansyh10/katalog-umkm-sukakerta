@@ -64,6 +64,18 @@ body {
   box-shadow: var(--shadow-md);
 }
 
+/* Premium Card Hover Effect */
+.umkm-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
+}
+
+.umkm-card-hover:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--shadow-lg), 0 0 0 2px rgba(76, 175, 80, 0.2);
+  background: rgba(255, 255, 255, 0.9);
+}
+
 /* Typography */
 h1, h2, h3 {
   font-weight: 700;
