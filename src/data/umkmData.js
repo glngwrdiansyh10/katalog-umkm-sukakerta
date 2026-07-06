@@ -53,9 +53,12 @@ export const announcements = [
 // === DATA TENTANG DESA ===
 export const desaInfo = {
   name: "Desa Sukakerta",
-  kecamatan: "Karawang",
+  kecamatan: "Kec. Cilaku, Kab. Cianjur",
+  provinsi: "Jawa Barat",
+  kode_pos: "43285",
   kepala_desa: "Bapak Rudi Hadiansyah",
   jumlah_rt: 47,
   sekolah: "5 SD Negeri, 1 SD Swasta, 1 SMP Swasta, 1 SMK",
-  deskripsi: "Desa Sukakerta dikenal dengan potensi UMKM-nya yang berkembang pesat, khususnya produk makanan ringan tradisional seperti Rangginang. Dengan 47 RT yang tersebar hingga Kp. Muhara, desa ini terus berinovasi untuk membawa produk lokal ke pasar yang lebih luas."
+  ciri_khas: "Makanan ringan tradisional (Rangginang, dll)",
+  deskripsi: "Desa Sukakerta terletak di Kecamatan Cilaku, Kabupaten Cianjur, Provinsi Jawa Barat. Desa ini memiliki 47 RT yang tersebar hingga Kp. Muhara dan dikenal dengan potensi UMKM makanan ringan tradisionalnya seperti Rangginang yang dibuat dengan resep turun-temurun."
 };

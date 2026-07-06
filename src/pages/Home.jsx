@@ -29,7 +29,7 @@ const Home = () => {
           onError={(e) => e.target.style.display = 'none'}
         />
         <div className="hero-badge">
-          <MapPin size={13} /> Desa Sukakerta, Karawang
+          <MapPin size={13} /> Desa Sukakerta, Cianjur
         </div>
         <h1 className="hero-title">Katalog <span>UMKM</span></h1>
         <p className="hero-subtitle">
@@ -131,7 +131,7 @@ const Home = () => {
 
       <div className="footer">
         <p>🌿 Proker KKN Informatika © {new Date().getFullYear()}</p>
-        <p style={{ marginTop: '0.25rem' }}>Desa Sukakerta — Karawang</p>
+        <p style={{ marginTop: '0.25rem' }}>Kec. Cilaku · Kab. Cianjur · Jawa Barat</p>
       </div>
     </div>
   );
