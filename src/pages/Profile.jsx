@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { umkmData } from '../data/umkmData';
-import { MessageCircle, ArrowLeft, Share2, CheckCircle } from 'lucide-react';
+import QRModal from '../components/QRModal';
+import { MessageCircle, ArrowLeft, Share2, CheckCircle, QrCode } from 'lucide-react';
 
 const Profile = () => {
   const { id } = useParams();
   const umkm = umkmData.find(u => u.id === id);
+  const [showQR, setShowQR] = useState(false);
 
   if (!umkm) {
     return (
@@ -26,18 +28,18 @@ const Profile = () => {
       await navigator.share({ title: umkm.name, url: window.location.href });
     } else {
       navigator.clipboard.writeText(window.location.href);
-      alert('Link disalin!');
+      alert('Link berhasil disalin!');
     }
   };
 
   return (
     <div>
+      {showQR && <QRModal umkm={umkm} onClose={() => setShowQR(false)} />}
+
       {/* Profile Hero */}
       <div className="profile-hero">
         <div className="profile-nav">
-          <Link to="/" className="profile-nav-btn">
-            <ArrowLeft size={18} />
-          </Link>
+          <Link to="/" className="profile-nav-btn"><ArrowLeft size={18} /></Link>
           <button className="profile-nav-btn" onClick={handleShare} style={{ border: 'none', cursor: 'pointer' }}>
             <Share2 size={18} />
           </button>
@@ -56,6 +58,7 @@ const Profile = () => {
 
       {/* Profile Body */}
       <div className="profile-body animate-fade-in">
+
         {/* Description */}
         <div className="profile-desc-card">
           <p className="profile-desc-text">{umkm.description}</p>
@@ -64,10 +67,12 @@ const Profile = () => {
         {/* Action Buttons */}
         <div className="profile-actions">
           <a href={waLink} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
-            <MessageCircle size={20} />
-            Pesan via WhatsApp
+            <MessageCircle size={20} /> Pesan via WhatsApp
           </a>
-          {/* Tombol Shopee bisa diaktifkan lagi di sini jika dibutuhkan nanti */}
+          <button onClick={() => setShowQR(true)} className="btn btn-outline" style={{ fontFamily: 'Outfit, sans-serif' }}>
+            <QrCode size={20} /> Lihat QR Code
+          </button>
+          {/* Tombol Shopee bisa diaktifkan lagi di sini jika dibutuhkan */}
         </div>
 
         {/* Product Catalog */}
@@ -91,9 +96,7 @@ const Profile = () => {
         )}
       </div>
 
-      <div className="footer">
-        <span>🌿 UMKM Desa Sukakerta</span>
-      </div>
+      <div className="footer"><span>🌿 UMKM Desa Sukakerta</span></div>
     </div>
   );
 };
