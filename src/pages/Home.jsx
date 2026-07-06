@@ -1,51 +1,90 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { umkmData } from '../data/umkmData';
 import UmkmCard from '../components/UmkmCard';
-import { MapPin, Search } from 'lucide-react';
+import { MapPin, Search, ShoppingBag, Users } from 'lucide-react';
 
 const Home = () => {
+  const [query, setQuery] = useState('');
+  const filtered = umkmData.filter(u =>
+    u.name.toLowerCase().includes(query.toLowerCase()) ||
+    u.category.toLowerCase().includes(query.toLowerCase())
+  );
+
   return (
-    <div className="animate-fade-in">
-      <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-        {/* Nanti kalau kamu simpan logo-kkn.png di folder public, logonya otomatis muncul di sini! */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
-          <img 
-            src="/logo-kkn.jpeg" 
-            alt="Logo KKN" 
-            style={{ height: '90px', objectFit: 'contain', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.05))' }}
-            onError={(e) => e.target.parentElement.style.display = 'none'} // Sembunyikan jika gambar belum ada
-          />
+    <div>
+      {/* Hero Header */}
+      <div className="hero-header">
+        <img
+          src="/logo-kkn.jpeg"
+          alt="Logo KKN"
+          className="hero-logo"
+          onError={(e) => e.target.style.display = 'none'}
+        />
+        <div className="hero-badge">
+          <MapPin size={13} /> Desa Sukakerta, Karawang
         </div>
-        
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(21, 128, 61, 0.1)', color: 'var(--primary-dark)', padding: '0.5rem 1rem', borderRadius: '2rem', fontSize: '0.875rem', fontWeight: '600', marginBottom: '1rem' }}>
-          <MapPin size={16} /> Desa Sukakerta
-        </div>
-        <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>
-          Katalog <span className="text-gradient">UMKM</span>
+        <h1 className="hero-title">
+          Katalog <span>UMKM</span>
         </h1>
-        <p style={{ color: 'var(--text-muted)' }}>
-          Mendukung produk lokal Desa Sukakerta melangkah ke dunia digital.
+        <p className="hero-subtitle">
+          Temukan & dukung produk lokal terbaik dari warga Desa Sukakerta
         </p>
       </div>
 
-      <div className="glass-panel" style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem' }}>
-        <Search size={20} color="var(--text-muted)" />
-        <input 
-          type="text" 
-          placeholder="Cari UMKM atau produk..." 
-          style={{ border: 'none', background: 'transparent', outline: 'none', width: '100%', fontSize: '1rem', color: 'var(--text-main)' }}
-        />
+      {/* Stats Bar */}
+      <div className="stats-bar animate-fade-in">
+        <div className="stat-item">
+          <div className="stat-value">{umkmData.length}</div>
+          <div className="stat-label">UMKM Aktif</div>
+        </div>
+        <div className="stat-divider" />
+        <div className="stat-item">
+          <div className="stat-value">47</div>
+          <div className="stat-label">RT / RW</div>
+        </div>
+        <div className="stat-divider" />
+        <div className="stat-item">
+          <div className="stat-value">100%</div>
+          <div className="stat-label">Lokal & Asli</div>
+        </div>
       </div>
 
-      <div>
-        <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>Daftar UMKM</h2>
-        {umkmData.map((umkm) => (
-          <UmkmCard key={umkm.id} umkm={umkm} />
-        ))}
+      {/* Search */}
+      <div className="search-wrap">
+        <div className="search-box">
+          <Search size={18} color="var(--text-light)" />
+          <input
+            type="text"
+            placeholder="Cari UMKM atau produk..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
       </div>
-      
-      <div style={{ textAlign: 'center', marginTop: '3rem', fontSize: '0.875rem', color: 'var(--text-muted)' }}>
-        <p>Proker KKN Informatika &copy; {new Date().getFullYear()}</p>
+
+      {/* UMKM List */}
+      <div className="section">
+        <div className="section-header">
+          <span className="section-title">Daftar UMKM</span>
+          <span className="section-count">{filtered.length} UMKM</span>
+        </div>
+
+        {filtered.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--text-muted)' }}>
+            <ShoppingBag size={40} style={{ opacity: 0.3, marginBottom: '0.75rem' }} />
+            <p>UMKM tidak ditemukan</p>
+          </div>
+        ) : (
+          filtered.map((umkm, i) => (
+            <UmkmCard key={umkm.id} umkm={umkm} index={i} />
+          ))
+        )}
+      </div>
+
+      {/* Footer */}
+      <div className="footer">
+        <p>🌿 Proker KKN Informatika © {new Date().getFullYear()}</p>
+        <p style={{ marginTop: '0.25rem' }}>Desa Sukakerta — Karawang</p>
       </div>
     </div>
   );

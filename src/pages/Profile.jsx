@@ -1,9 +1,7 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { umkmData } from '../data/umkmData';
-import LinkButton from '../components/LinkButton';
-import ProductCard from '../components/ProductCard';
-import { MessageCircle, ShoppingBag, ArrowLeft, Share2 } from 'lucide-react';
+import { MessageCircle, ArrowLeft, Share2, CheckCircle } from 'lucide-react';
 
 const Profile = () => {
   const { id } = useParams();
@@ -11,81 +9,90 @@ const Profile = () => {
 
   if (!umkm) {
     return (
-      <div style={{ textAlign: 'center', padding: '3rem 0' }}>
-        <h2>UMKM tidak ditemukan</h2>
-        <Link to="/" style={{ color: 'var(--primary)', marginTop: '1rem', display: 'inline-block' }}>Kembali ke Beranda</Link>
+      <div style={{ textAlign: 'center', padding: '4rem 1.5rem' }}>
+        <h2 style={{ marginBottom: '1rem' }}>UMKM tidak ditemukan</h2>
+        <Link to="/" style={{ color: 'var(--primary)', fontWeight: '600' }}>← Kembali ke Beranda</Link>
       </div>
     );
   }
 
-  // Format pesan WA
-  const waMessage = encodeURIComponent(`Halo ${umkm.owner}, saya melihat profil UMKM Anda di Katalog Desa Sukakerta. Saya ingin bertanya tentang produk Anda.`);
+  const waMessage = encodeURIComponent(
+    `Halo ${umkm.owner}, saya melihat profil UMKM "${umkm.name}" di Katalog Desa Sukakerta. Saya ingin bertanya tentang produk Anda 😊`
+  );
   const waLink = `https://wa.me/${umkm.wa_number}?text=${waMessage}`;
 
+  const handleShare = async () => {
+    if (navigator.share) {
+      await navigator.share({ title: umkm.name, url: window.location.href });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert('Link disalin!');
+    }
+  };
+
   return (
-    <div className="animate-fade-in">
-      {/* Header / Nav */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <Link to="/" style={{ color: 'var(--text-main)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '500' }}>
-          <div className="glass-panel" style={{ padding: '0.5rem', borderRadius: '50%', display: 'flex' }}>
-            <ArrowLeft size={20} />
-          </div>
-        </Link>
-        <button className="glass-panel" style={{ padding: '0.5rem', borderRadius: '50%', display: 'flex', border: 'none', cursor: 'pointer', color: 'var(--text-main)' }}>
-          <Share2 size={20} />
-        </button>
-      </div>
-
-      {/* Profile Info */}
-      <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-        <div style={{ width: '100px', height: '100px', borderRadius: '50%', overflow: 'hidden', border: '3px solid white', boxShadow: 'var(--shadow-md)', margin: '0 auto 1rem' }}>
-          <img src={umkm.profile_pic} alt={umkm.name} className="img-cover" />
+    <div>
+      {/* Profile Hero */}
+      <div className="profile-hero">
+        <div className="profile-nav">
+          <Link to="/" className="profile-nav-btn">
+            <ArrowLeft size={18} />
+          </Link>
+          <button className="profile-nav-btn" onClick={handleShare} style={{ border: 'none', cursor: 'pointer' }}>
+            <Share2 size={18} />
+          </button>
         </div>
-        <h1 style={{ fontSize: '1.75rem', marginBottom: '0.25rem' }}>{umkm.name}</h1>
-        <p style={{ color: 'var(--primary)', fontWeight: '600', marginBottom: '1rem', fontSize: '0.875rem' }}>{umkm.category} • Milik {umkm.owner}</p>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', maxWidth: '90%', margin: '0 auto' }}>
-          {umkm.description}
-        </p>
+
+        <div className="profile-avatar-wrapper">
+          <img src={umkm.profile_pic} alt={umkm.name} className="profile-avatar" />
+          <div className="profile-verified">
+            <CheckCircle size={13} color="white" fill="white" />
+          </div>
+        </div>
+
+        <div className="profile-name">{umkm.name}</div>
+        <div className="profile-meta">{umkm.category} • Milik {umkm.owner}</div>
       </div>
 
-      {/* Action Buttons */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '3rem' }}>
-        <LinkButton 
-          href={waLink} 
-          icon={MessageCircle} 
-          text="Hubungi via WhatsApp" 
-          variant="primary" 
-        />
-        {/* Disembunyikan sementara, fokus ke WA dulu
-        {umkm.shopee_link && (
-          <LinkButton 
-            href={umkm.shopee_link} 
-            icon={ShoppingBag} 
-            text="Beli di Shopee" 
-            variant="outline" 
-          />
+      {/* Profile Body */}
+      <div className="profile-body animate-fade-in">
+        {/* Description */}
+        <div className="profile-desc-card">
+          <p className="profile-desc-text">{umkm.description}</p>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="profile-actions">
+          <a href={waLink} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+            <MessageCircle size={20} />
+            Pesan via WhatsApp
+          </a>
+          {/* Tombol Shopee bisa diaktifkan lagi di sini jika dibutuhkan nanti */}
+        </div>
+
+        {/* Product Catalog */}
+        {umkm.products && umkm.products.length > 0 && (
+          <>
+            <div className="catalog-title">Katalog Produk</div>
+            <div className="product-grid">
+              {umkm.products.map(product => (
+                <div key={product.id} className="product-card">
+                  <div className="product-img">
+                    <img src={product.image} alt={product.name} />
+                  </div>
+                  <div className="product-info">
+                    <div className="product-name">{product.name}</div>
+                    <div className="product-price">{product.price}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         )}
-        */}
       </div>
 
-      {/* Product Gallery */}
-      {umkm.products && umkm.products.length > 0 && (
-        <div>
-          <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            Katalog Produk
-          </h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
-            {umkm.products.map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
-      )}
-      
-      <div style={{ textAlign: 'center', marginTop: '4rem', paddingBottom: '2rem' }}>
-        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', background: 'var(--surface-glass)', padding: '0.25rem 0.75rem', borderRadius: '1rem' }}>
-          Powered by UMKM Sukakerta
-        </span>
+      <div className="footer">
+        <span>🌿 UMKM Desa Sukakerta</span>
       </div>
     </div>
   );
