@@ -56,6 +56,7 @@ const Profile = () => {
           text="Hubungi via WhatsApp" 
           variant="primary" 
         />
+        {/* Disembunyikan sementara, fokus ke WA dulu
         {umkm.shopee_link && (
           <LinkButton 
             href={umkm.shopee_link} 
@@ -64,6 +65,7 @@ const Profile = () => {
             variant="outline" 
           />
         )}
+        */}
       </div>
 
       {/* Product Gallery */}
