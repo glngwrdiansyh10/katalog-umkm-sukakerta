@@ -66,8 +66,8 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Announcements */}
-      <AnnouncementBanner />
+      {/* Announcements (Ditangguhkan sementara) */}
+      {/* <AnnouncementBanner /> */}
 
       {/* Search */}
       <div className="search-wrap">
