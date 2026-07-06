@@ -85,10 +85,11 @@ body {
 }
 
 .hero-logo {
+  display: block;
+  margin: 0 auto 1.25rem auto;
   width: 96px;
   height: 96px;
   object-fit: contain;
-  margin-bottom: 1.25rem;
   box-shadow: 0 8px 24px rgba(0,0,0,0.15);
   position: relative;
   z-index: 1;
